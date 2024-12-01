@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiswaResource\Pages;
-use App\Filament\Resources\SiswaResource\RelationManagers;
-use App\Models\Siswa;
+use App\Filament\Resources\GuruResource\Pages;
+use App\Filament\Resources\GuruResource\RelationManagers;
+use App\Models\Guru;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,14 +13,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SiswaResource extends Resource
+class GuruResource extends Resource
 {
-    protected static ?string $model = Siswa::class;
+    protected static ?string $model = Guru::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function getNavigationGroup(): string
     {
-        return 'Data Siswa'; // Nama grup
+        return 'Data Guru'; // Nama grup
     }
     public static function getNavigationSort(): ?int
     {
@@ -34,38 +34,32 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('nisn')
+                Forms\Components\TextInput::make('nip_pns')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('nik_swasta')
+                    ->maxLength(255),
+                Forms\Components\DatePicker::make('tanggal_lahir')
+                    ->required(),
+                Forms\Components\TextInput::make('alamat')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('jenis_kelamin')
-                    ->required(),
-                Forms\Components\DatePicker::make('tgl_lahir_siswa')
-                    ->required(),
-                Forms\Components\TextInput::make('tempat_lahir_siswa')
+                Forms\Components\TextInput::make('pendidikan_terakhir')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('tahun_ajaran_daftar')
-                    ->required(),
-                Forms\Components\TextInput::make('id_kelas')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('id_ibu')
-                    ->label('Nik Ibu')
-                    ->relationship('ibu', 'nik')
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\Select::make('id_ayah')
-                    ->label('Nik Ayah')
-                    ->relationship('ayah', 'nik')
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\Select::make('id_wali')
-                    ->label('Nik Wali')
-                    ->relationship('wali', 'nik')
-                    ->preload()
-                    ->searchable(),
                 Forms\Components\FileUpload::make('gambar'),
-
+                // Forms\Components\TextInput::make('id_mata_pelajaran')
+                //     ->required()
+                //     ->numeric(),
+                // Forms\Components\Select::make('id_mata_pelajaran')
+                //     ->label('Mata Pelajaran')
+                //     ->relationship('mata_pelajaran', 'name')
+                //     ->preload()
+                //     ->multiple()
+                //     ->searchable(),
+                Forms\Components\MultiSelect::make('id_mata_pelajaran')
+                    ->label('Mata Pelajaran')
+                    ->relationship('mataPelajarans', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
+                    ->required(),
             ]);
     }
 
@@ -77,17 +71,24 @@ class SiswaResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nisn')
+                Tables\Columns\TextColumn::make('nip_pns')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('jenis_kelamin'),
-                Tables\Columns\TextColumn::make('tgl_lahir_siswa')
+                Tables\Columns\TextColumn::make('nik_swasta')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('tanggal_lahir')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tempat_lahir_siswa')
+                Tables\Columns\TextColumn::make('alamat')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('tahun_ajaran_daftar')
-                    ->date()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('pendidikan_terakhir')
+                    ->searchable(),
+                // Menampilkan mata pelajaran yang dipilih
+                Tables\Columns\TextColumn::make('mataPelajarans.name')
+                    ->label('Mata Pelajaran')
+                    ->getStateUsing(function (Guru $guru) {
+                        // Mengambil nama-nama mata pelajaran yang dipilih
+                        return $guru->mataPelajarans->pluck('name')->implode(', ');
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -100,18 +101,6 @@ class SiswaResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('id_kelas')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_ibu')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_ayah')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_wali')
-                    ->numeric()
-                    ->sortable(),
             ])
             ->filters([
                 //
@@ -136,9 +125,9 @@ class SiswaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSiswas::route('/'),
-            'create' => Pages\CreateSiswa::route('/create'),
-            'edit' => Pages\EditSiswa::route('/{record}/edit'),
+            'index' => Pages\ListGurus::route('/'),
+            'create' => Pages\CreateGuru::route('/create'),
+            'edit' => Pages\EditGuru::route('/{record}/edit'),
         ];
     }
 }

@@ -13,4 +13,16 @@ class Siswa extends Model
     {
         return $this->belongsTo(Kelas::class);
     }
+    public function ayah(): BelongsTo
+    {
+        return $this->belongsTo(Ayah::class);
+    }
+    public function ibu(): BelongsTo
+    {
+        return $this->belongsTo(Ibu::class);
+    }
+    public function wali(): BelongsTo
+    {
+        return $this->belongsTo(Wali::class);
+    }
 }

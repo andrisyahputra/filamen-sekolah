@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Filament\Resources\PengurusResource\Pages;
+use App\Filament\Resources\PengurusResource\RelationManagers;
+use App\Models\Pengurus;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,14 +12,20 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Hash;
 
-class UserResource extends Resource
+class PengurusResource extends Resource
 {
-    protected static ?string $navigationLabel = 'Akun';
-    protected static ?string $model = User::class;
+    protected static ?string $model = Pengurus::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationGroup(): string
+    {
+        return 'Data Pengurus'; // Nama grup
+    }
+    public static function getNavigationSort(): ?int
+    {
+        return 1; // Nilai kecil untuk prioritas tinggi
+    }
 
     public static function form(Form $form): Form
     {
@@ -28,23 +34,22 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('tahun_masuk')
+                    ->label('Tahun Masuk')
+                    ->required()
+                    ->numeric()
+                    ->default(now()->year),
+                Forms\Components\DatePicker::make('tanggal_lahir')
+                    ->required(),
+                Forms\Components\TextInput::make('tempat_lahir')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->maxLength(255)
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn(string $context): bool => $context === 'create'),
-
-                Forms\Components\Select::make('roles')
-                    ->relationship('roles', 'name')
+                Forms\Components\FileUpload::make('gambar'),
+                Forms\Components\Select::make('id_jabatan')
+                    ->label('jabatan')
+                    ->relationship('jabatan', 'name')
                     ->preload()
                     ->searchable(),
-                Forms\Components\FileUpload::make('gambar')
             ]);
     }
 
@@ -56,13 +61,12 @@ class UserResource extends Resource
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('roles.name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('tahun_masuk'),
+                Tables\Columns\TextColumn::make('tanggal_lahir')
+                    ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('tempat_lahir')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -71,6 +75,13 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('id_jabatan')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //
@@ -95,9 +106,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => Pages\ListPenguruses::route('/'),
+            'create' => Pages\CreatePengurus::route('/create'),
+            'edit' => Pages\EditPengurus::route('/{record}/edit'),
         ];
     }
 }

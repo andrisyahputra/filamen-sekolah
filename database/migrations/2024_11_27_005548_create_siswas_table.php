@@ -12,13 +12,17 @@ return new class extends Migration {
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kelas_id')->constrained('kelas');
-            $table->string('identification_number');
             $table->string('name');
-            $table->string('phone_number');
-            $table->tinyInteger('gender');
-            $table->integer('school_year_start');
-            $table->integer('school_year_end');
+            $table->string('nisn');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->date('tgl_lahir_siswa');
+            $table->string('tempat_lahir_siswa');
+            $table->date('tahun_ajaran_daftar');
+            // $table->foreignId('id_kelas')->constrained('kelas')->nullable();
+            // $table->foreignId('id_ibu')->constrained('keluarga')->nullable();
+            // $table->foreignId('id_ayah')->constrained('keluarga')->nullable();
+            // $table->foreignId('id_wali')->constrained('keluarga')->nullable();
+            $table->string('gambar')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

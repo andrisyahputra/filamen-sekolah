@@ -10,10 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('kelas', function (Blueprint $table) {
+        Schema::create('gurus', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            // $table->foreignId('id_guru')->constrained('gurus');
+            $table->string('name');
+            $table->string('nip_pns')->nullable();
+            $table->string('nik_swasta')->nullable();
+            $table->date('tanggal_lahir');
+            $table->string('alamat');
+            $table->string('pendidikan_terakhir');
+            $table->string('gambar')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -24,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('kelas');
+        Schema::dropIfExists('gurus');
     }
 };

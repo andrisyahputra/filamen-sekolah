@@ -39,7 +39,14 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-            ])
+            ])->navigationGroups([
+                    'Data Siswa', // Grup pertama
+                    'Data Guru', // Grup pertama
+                    'Data Pengurus', // Grup pertama
+                    'Role',  // Grup kedua
+                ])
+
+
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\Kelas;
+use App\Filament\Resources\JabatanResource\Pages;
+use App\Filament\Resources\JabatanResource\RelationManagers;
+use App\Models\Jabatan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,18 +13,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KelasResource extends Resource
+class JabatanResource extends Resource
 {
-    protected static ?string $model = Kelas::class;
+    protected static ?string $model = Jabatan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     public static function getNavigationGroup(): string
     {
-        return 'Data Guru'; // Nama grup
+        return 'Data Pengurus'; // Nama grup
     }
     public static function getNavigationSort(): ?int
     {
-        return 3; // Nilai kecil untuk prioritas tinggi
+        return 2; // Nilai kecil untuk prioritas tinggi
     }
 
     public static function form(Form $form): Form
@@ -34,9 +34,6 @@ class KelasResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('id_guru')
-                    ->required()
-                    ->numeric(),
             ]);
     }
 
@@ -54,13 +51,6 @@ class KelasResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('id_guru')
-                    ->numeric()
-                    ->sortable(),
             ])
             ->filters([
                 //
@@ -85,9 +75,9 @@ class KelasResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKelas::route('/'),
-            'create' => Pages\CreateKelas::route('/create'),
-            'edit' => Pages\EditKelas::route('/{record}/edit'),
+            'index' => Pages\ListJabatans::route('/'),
+            'create' => Pages\CreateJabatan::route('/create'),
+            'edit' => Pages\EditJabatan::route('/{record}/edit'),
         ];
     }
 }

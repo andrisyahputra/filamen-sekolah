@@ -10,10 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('siswas', function (Blueprint $table) {
-            //
-            $table->enum('gender', ['L', 'P'])->change();
-
+        Schema::create('jabatans', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -22,9 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('siswas', function (Blueprint $table) {
-            //
-            $table->tinyInteger('gender')->change();
-        });
+        Schema::dropIfExists('jabatans');
     }
 };
