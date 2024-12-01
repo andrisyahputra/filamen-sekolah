@@ -37,8 +37,14 @@ class SiswaResource extends Resource
                 Forms\Components\TextInput::make('nisn')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('jenis_kelamin')
-                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options([
+                        'L' => 'Laki-Laki',
+                        'P' => 'Perempuan',
+                    ])
+                    ->required()
+                    ->placeholder('Pilih Jenis Kelamin'),
                 Forms\Components\DatePicker::make('tgl_lahir_siswa')
                     ->required(),
                 Forms\Components\TextInput::make('tempat_lahir_siswa')
