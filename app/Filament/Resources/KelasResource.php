@@ -34,9 +34,11 @@ class KelasResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('id_guru')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('id_guru')
+                    ->label('Wali Kelas')
+                    ->relationship('guru', 'name')
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
@@ -58,9 +60,10 @@ class KelasResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('id_guru')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('guru.name')
+                    ->label('Wali Kelas')
+                    ->searchable(),
+
             ])
             ->filters([
                 //

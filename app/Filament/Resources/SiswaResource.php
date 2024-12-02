@@ -51,23 +51,44 @@ class SiswaResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tahun_ajaran_daftar')
+                    ->label('Pendaftaran')
                     ->required(),
-                Forms\Components\TextInput::make('id_kelas')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('id_ibu')
-                    ->label('Nik Ibu')
-                    ->relationship('ibu', 'nik')
+                // Forms\Components\TextInput::make('id_kelas')
+                //     ->required()
+                //     ->numeric(),
+                Forms\Components\Select::make('id_kelas')
+                    ->label('Kelas')
+                    ->relationship('kelas', 'name')
                     ->preload()
                     ->searchable(),
+                // Forms\Components\Select::make('id_ibu')
+                //     ->label('Nik Ibu')
+                //     ->relationship('ibu', 'nik')
+                //     ->preload()
+                //     ->searchable(),
+                // Forms\Components\Select::make('id_wali')
+                //     ->label('Nik Wali')
+                //     ->relationship('wali', 'nik')
+                //     ->preload()
+                //     ->searchable(),
+                // Forms\Components\Select::make('id_wali')
+                //     ->label('Nik Wali')
+                //     ->relationship('wali', 'name_and_nik') // Menggunakan accessor
+                //     ->preload()
+                //     ->searchable(),
                 Forms\Components\Select::make('id_ayah')
                     ->label('Nik Ayah')
-                    ->relationship('ayah', 'nik')
+                    ->relationship('ayah', 'name_and_nik') // Menggunakan kolom gabungan
+                    ->preload()
+                    ->searchable(),
+                Forms\Components\Select::make('id_ibu')
+                    ->label('Nik Ibu')
+                    ->relationship('ibu', 'name_and_nik') // Menggunakan kolom gabungan
                     ->preload()
                     ->searchable(),
                 Forms\Components\Select::make('id_wali')
                     ->label('Nik Wali')
-                    ->relationship('wali', 'nik')
+                    ->relationship('wali', 'name_and_nik') // Menggunakan kolom gabungan
                     ->preload()
                     ->searchable(),
                 Forms\Components\FileUpload::make('gambar'),
@@ -106,18 +127,33 @@ class SiswaResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('id_kelas')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_ibu')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_ayah')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('id_wali')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('id_kelas')
+                //     ->numeric()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('kelas.name')
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('ibu.name')
+                //     ->searchable(),
+                Tables\Columns\TextColumn::make('ayah.name_and_nik')
+                    ->label('Ayah (Nama - NIK)')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ibu.name_and_nik')
+                    ->label('Ibu (Nama - NIK)')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('wali.name_and_nik')
+                    ->label('Wali (Nama - NIK)')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('wali.name')
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('id_ibu')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('id_ayah')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('id_wali')
+                //     ->numeric()
+                //     ->sortable(),
             ])
             ->filters([
                 //

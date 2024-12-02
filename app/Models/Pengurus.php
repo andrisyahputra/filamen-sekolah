@@ -9,8 +9,8 @@ class Pengurus extends Model
 {
     //
     protected $guarded = ['id'];
-    public function jabatan(): BelongsTo
+    public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class);
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id');
     }
 }

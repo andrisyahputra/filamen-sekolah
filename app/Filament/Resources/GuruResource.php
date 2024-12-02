@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GuruResource\Pages;
 use App\Filament\Resources\GuruResource\RelationManagers;
 use App\Models\Guru;
+use App\Models\Kelas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -35,8 +36,10 @@ class GuruResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nip_pns')
+                    ->label('NIP')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_swasta')
+                    ->label('NIK')
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_lahir')
                     ->required(),
@@ -59,6 +62,10 @@ class GuruResource extends Resource
                 Forms\Components\MultiSelect::make('id_mata_pelajaran')
                     ->label('Mata Pelajaran')
                     ->relationship('mataPelajarans', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
+                    ->required(),
+                Forms\Components\MultiSelect::make('id_kelas')
+                    ->label('Kelas')
+                    ->relationship('guruKelas', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
                     ->required(),
             ]);
     }
@@ -86,8 +93,12 @@ class GuruResource extends Resource
                 Tables\Columns\TextColumn::make('mataPelajarans.name')
                     ->label('Mata Pelajaran')
                     ->getStateUsing(function (Guru $guru) {
-                        // Mengambil nama-nama mata pelajaran yang dipilih
                         return $guru->mataPelajarans->pluck('name')->implode(', ');
+                    }),
+                Tables\Columns\TextColumn::make('guruKelas.name')
+                    ->label('Kelas')
+                    ->getStateUsing(function (Guru $guru) {
+                        return $guru->guruKelas->pluck('name')->implode(', ');
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
