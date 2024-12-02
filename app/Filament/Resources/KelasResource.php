@@ -39,6 +39,10 @@ class KelasResource extends Resource
                     ->relationship('guru', 'name')
                     ->preload()
                     ->searchable(),
+                Forms\Components\MultiSelect::make('id_kelas')
+                    ->label('Siswa')
+                    ->relationship('siswas', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
+                    ->required(),
             ]);
     }
 
@@ -48,6 +52,7 @@ class KelasResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -63,6 +68,16 @@ class KelasResource extends Resource
                 Tables\Columns\TextColumn::make('guru.name')
                     ->label('Wali Kelas')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('siswas.name')
+                    ->label('Siswa Kelas')
+                    ->getStateUsing(function (Kelas $kelas) {
+                        return $kelas->siswas->pluck('name')->implode(', ');
+                    }),
+                Tables\Columns\TextColumn::make('jumlah')
+                    ->label('Jumlah Siswa')
+                    ->getStateUsing(function (Kelas $kelas) {
+                        return $kelas->siswas()->count();
+                    }),
 
             ])
             ->filters([

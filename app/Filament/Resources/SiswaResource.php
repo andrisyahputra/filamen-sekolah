@@ -56,11 +56,11 @@ class SiswaResource extends Resource
                 // Forms\Components\TextInput::make('id_kelas')
                 //     ->required()
                 //     ->numeric(),
-                Forms\Components\Select::make('id_kelas')
-                    ->label('Kelas')
-                    ->relationship('kelas', 'name')
-                    ->preload()
-                    ->searchable(),
+                // Forms\Components\Select::make('id_kelas')
+                //     ->label('Kelas')
+                //     ->relationship('kelas', 'name')
+                //     ->preload()
+                //     ->searchable(),
                 // Forms\Components\Select::make('id_ibu')
                 //     ->label('Nik Ibu')
                 //     ->relationship('ibu', 'nik')
@@ -130,8 +130,8 @@ class SiswaResource extends Resource
                 // Tables\Columns\TextColumn::make('id_kelas')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas.name')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('kelas.name')
+                //     ->searchable(),
                 // Tables\Columns\TextColumn::make('ibu.name')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('ayah.name_and_nik')
