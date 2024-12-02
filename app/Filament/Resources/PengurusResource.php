@@ -79,9 +79,11 @@ class PengurusResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('id_jabatan')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('id_jabatan')
+                //     ->numeric()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('jabatan.name')
+                    ->searchable(),
             ])
             ->filters([
                 //
