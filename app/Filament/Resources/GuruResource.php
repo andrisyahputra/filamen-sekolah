@@ -50,22 +50,9 @@ class GuruResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('gambar'),
-                // Forms\Components\TextInput::make('id_mata_pelajaran')
-                //     ->required()
-                //     ->numeric(),
-                // Forms\Components\Select::make('id_mata_pelajaran')
-                //     ->label('Mata Pelajaran')
-                //     ->relationship('mata_pelajaran', 'name')
-                //     ->preload()
-                //     ->multiple()
-                //     ->searchable(),
                 Forms\Components\MultiSelect::make('id_mata_pelajaran')
                     ->label('Mata Pelajaran')
                     ->relationship('mataPelajarans', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
-                    ->required(),
-                Forms\Components\MultiSelect::make('id_kelas')
-                    ->label('Kelas')
-                    ->relationship('guruKelas', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
                     ->required(),
             ]);
     }
@@ -94,11 +81,6 @@ class GuruResource extends Resource
                     ->label('Mata Pelajaran')
                     ->getStateUsing(function (Guru $guru) {
                         return $guru->mataPelajarans->pluck('name')->implode(', ');
-                    }),
-                Tables\Columns\TextColumn::make('guruKelas.name')
-                    ->label('Kelas')
-                    ->getStateUsing(function (Guru $guru) {
-                        return $guru->guruKelas->pluck('name')->implode(', ');
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
