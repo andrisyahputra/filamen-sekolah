@@ -5,8 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KelasResource\Pages;
 use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\Kelas;
+use App\Models\Siswa;
+use Dotenv\Exception\ValidationException;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -29,7 +32,9 @@ class KelasResource extends Resource
 
     public static function form(Form $form): Form
     {
+        // dd();
         return $form
+
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -39,10 +44,44 @@ class KelasResource extends Resource
                     ->relationship('guru', 'name')
                     ->preload()
                     ->searchable(),
-                Forms\Components\MultiSelect::make('id_kelas')
+                // Forms\Components\MultiSelect::make('id_kelas')
+                //     ->label('Siswa')
+                //     ->relationship('siswas', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
+                //     ->required(),
+                // Forms\Components\MultiSelect::make('siswas')
+                //     ->label('Siswa')
+                //     ->relationship('siswas', 'name')
+                //     ->required()
+                //     ->options(
+                //         Siswa::doesntHave('kelas')->pluck('name', 'id')->toArray()
+                //     ),
+                // Forms\Components\MultiSelect::make('siswas')
+                //     ->label('Siswa')
+                //     ->relationship('siswas', 'name') // Hubungkan ke relasi di model Kelas
+                //     ->required()
+                //     ->options(
+                //         Siswa::whereDoesntHave('kelas') // Siswa tanpa kelas
+                //             ->pluck('name', 'id')
+                //             ->toArray()
+                //     )
+
+                Forms\Components\MultiSelect::make('siswas')
                     ->label('Siswa')
-                    ->relationship('siswas', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
-                    ->required(),
+                    ->relationship('siswas', 'name')
+                    ->required()
+                    ->options(
+                        Siswa::doesntHave('kelas')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    )
+                    ->afterStateUpdated(function ($state) {
+                        try {
+                            return true;
+                        } catch (\Illuminate\Validation\ValidationException $e) {
+
+                            return false;
+                        }
+                    })
             ]);
     }
 
