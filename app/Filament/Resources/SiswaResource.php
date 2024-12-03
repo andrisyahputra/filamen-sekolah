@@ -61,34 +61,42 @@ class SiswaResource extends Resource
                 ->schema([
                     // Forms\Components\DatePicker::make('tgl_mulai')
                     //     ->required(),
-                            Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('nisn')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\Select::make('jenis_kelamin')
-                                ->label('Jenis Kelamin')
-                                ->options([
-                                    'L' => 'Laki-Laki',
-                                    'P' => 'Perempuan',
-                                ])
-                                ->required()
-                                ->placeholder('Pilih Jenis Kelamin'),
-                            Forms\Components\DatePicker::make('tgl_lahir_siswa')
-                                ->required(),
-                            Forms\Components\TextInput::make('tempat_lahir_siswa')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\DatePicker::make('tahun_ajaran_daftar')
-                                ->label('Pendaftaran')
-                                ->required(),
-                            Forms\Components\DatePicker::make('anak_berapa')
-                                ->label('Anak Ke')
-                                ->required(),
-                            Forms\Components\DatePicker::make('kk')
-                                ->label('Kartu Keluarga')
-                                ->required(),
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nama Lengkap')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('nisn')
+                        ->label('NISN')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\Select::make('jenis_kelamin')
+                        ->label('Jenis Kelamin')
+                        ->options([
+                            'L' => 'Laki-Laki',
+                            'P' => 'Perempuan',
+                        ])
+                        ->required()
+                        ->placeholder('Pilih Jenis Kelamin'),
+                    Forms\Components\DatePicker::make('tgl_lahir_siswa')
+                        ->required(),
+                    Forms\Components\TextInput::make('tempat_lahir_siswa')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\DatePicker::make('tahun_ajaran_daftar')
+                        ->label('Pendaftaran')
+                        ->required(),
+                    Forms\Components\TextInput::make('tahun_ajaran')
+                        ->label('Tahun Ajaran')
+                        ->required()
+                        ->numeric()
+                        ->default(now()->year),
+                    Forms\Components\DatePicker::make('anak_berapa')
+                        ->label('Anak Ke')
+                        ->numeric()
+                        ->required(),
+                    Forms\Components\DatePicker::make('kk')
+                        ->label('Kartu Keluarga')
+                        ->required(),
 
                     // Forms\Components\Textarea::make('Data Siswa')
                     //     ->required()
@@ -96,90 +104,99 @@ class SiswaResource extends Resource
 
                 ]),
         ];
-            $schema[] = Forms\Components\Section::make('Data Ayah')
-                ->schema([
-                     Forms\Components\TextInput::make('nama_ayah')
-                    ->required()
+        $schema[] = Forms\Components\Section::make('Data Ayah')
+            ->schema([
+                Forms\Components\TextInput::make('nama_ayah')
+                    // ->required()
+                    ->label('Nama Lengkap Ayah')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ayah')
-                    ->required()
+                    ->label('NIK Ayah')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tempat_lahir_ayah')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_lahir_ayah')
-                    ->required(),
+                ,// ->required(),
                 Forms\Components\TextInput::make('no_hp_ayah')
-                    ->required()
+                    ->label('NO TLP/WA Ayah')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('alamat_ayah')
-                    ->required()
+                    // ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('pekerjaan_ayah')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pendidikan_ayah')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('gambar_ayah'),
 
-                ]);
-            $schema[] = Forms\Components\Section::make('Data IBU')
-                ->schema([
-                     Forms\Components\TextInput::make('nama_ibu')
-                    ->required()
+            ]);
+        $schema[] = Forms\Components\Section::make('Data IBU')
+            ->schema([
+                Forms\Components\TextInput::make('nama_ibu')
+                    ->label('Nama Lengkap Ibu')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ibu')
-                    ->required()
+                    ->label('NIK IBU')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tempat_lahir_ibu')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_lahir_ibu')
-                    ->required(),
+                ,// ->required(),
                 Forms\Components\TextInput::make('no_hp_ibu')
-                    ->required()
+                    ->label('NO TLP/WA Ibu')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('alamat_ibu')
-                    ->required()
+                    // ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('pekerjaan_ibu')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pendidikan_ibu')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('gambar_ibu'),
 
-                ]);
-            $schema[] = Forms\Components\Section::make('Data WALI')
-                ->schema([
-                     Forms\Components\TextInput::make('nama_wali')
-                    ->required()
+            ]);
+        $schema[] = Forms\Components\Section::make('Data WALI')
+            ->schema([
+                Forms\Components\TextInput::make('nama_wali')
+                    ->label('Nama Lengkap Wali')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_wali')
-                    ->required()
+                    ->label('NIK Wali')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tempat_lahir_wali')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal_lahir_wali')
-                    ->required(),
+                Forms\Components\DatePicker::make('tanggal_lahir_wali'),
+                // ->required(),
                 Forms\Components\TextInput::make('no_hp_wali')
-                    ->required()
+                    ->label('NO TLP/WA Wali')
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('alamat_wali')
-                    ->required()
+                    // ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('pekerjaan_wali')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('pendidikan_wali')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('gambar_wali'),
 
-                ]);
+            ]);
         return $form->schema($schema);
     }
 
