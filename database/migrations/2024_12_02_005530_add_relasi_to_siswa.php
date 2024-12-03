@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +12,10 @@ return new class extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
-            $table->foreignId('id_kelas')->constrained('kelas')->nullable();
-            $table->foreignId('id_ibu')->constrained('ibus')->nullable();
-            $table->foreignId('id_ayah')->constrained('ayahs')->nullable();
-            $table->foreignId('id_wali')->constrained('walis')->nullable();
+            $table->foreignId('id_kelas')->nullable()->constrained('kelas');
+            $table->foreignId('id_ibu')->nullable()->constrained('ibus');
+            $table->foreignId('id_ayah')->nullable()->constrained('ayahs');
+            $table->foreignId('id_wali')->nullable()->constrained('walis');
         });
     }
 
