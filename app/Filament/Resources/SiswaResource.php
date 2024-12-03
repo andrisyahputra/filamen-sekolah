@@ -90,10 +90,10 @@ class SiswaResource extends Resource
                         ->required()
                         ->numeric()
                         ->default(now()->year),
-                    Forms\Components\DatePicker::make('anak_berapa')
-                        ->label('Anak Ke')
-                        ->numeric()
-                        ->required(),
+                    Forms\Components\TextInput::make('anak_berapa')
+    ->label('Anak Ke')
+    ->numeric()
+    ->required(),
                     Forms\Components\DatePicker::make('kk')
                         ->label('Kartu Keluarga')
                         ->required(),
