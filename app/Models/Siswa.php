@@ -31,22 +31,4 @@ class Siswa extends Model
     // }
 
 
-    public function ayah(): BelongsTo
-    {
-        return $this->belongsTo(Ayah::class, 'id_ayah', 'id')
-            ->selectRaw("id, CONCAT(name, ' - ', nik) as name_and_nik")
-            ->orderByRaw("CONCAT(name, ' - ', nik) ASC");
-    }
-    public function ibu(): BelongsTo
-    {
-        return $this->belongsTo(Ibu::class, 'id_ibu', 'id')
-            ->selectRaw("id, CONCAT(name, ' - ', nik) as name_and_nik")
-            ->orderByRaw("CONCAT(name, ' - ', nik) ASC");
-    }
-    public function wali(): BelongsTo
-    {
-        return $this->belongsTo(Wali::class, 'id_wali', 'id')
-            ->selectRaw("id, CONCAT(name, ' - ', nik) as name_and_nik")
-            ->orderByRaw("CONCAT(name, ' - ', nik) ASC");
-    }
 }
