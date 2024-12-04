@@ -83,20 +83,16 @@ class SiswaResource extends Resource
                         ->required()
                         ->maxLength(255),
                     Forms\Components\DatePicker::make('tahun_ajaran_daftar')
-                        ->label('Pendaftaran')
-                        ->required(),
+                        ->label('Pendaftaran'),
                     Forms\Components\TextInput::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
-                        ->required()
                         ->numeric()
                         ->default(now()->year),
                     Forms\Components\TextInput::make('anak_berapa')
-    ->label('Anak Ke')
-    ->numeric()
-    ->required(),
-                    Forms\Components\DatePicker::make('kk')
+                        ->label('Anak Ke')
+                        ->numeric(),
+                    Forms\Components\TextInput::make('kk')
                         ->label('Kartu Keluarga')
-                        ->required(),
 
                     // Forms\Components\Textarea::make('Data Siswa')
                     //     ->required()
