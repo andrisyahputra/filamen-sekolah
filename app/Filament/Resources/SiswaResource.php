@@ -93,6 +93,7 @@ class SiswaResource extends Resource
                         ->numeric(),
                     Forms\Components\TextInput::make('kk')
                         ->label('Kartu Keluarga')
+                        ->numeric()
 
                     // Forms\Components\Textarea::make('Data Siswa')
                     //     ->required()
@@ -108,8 +109,7 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ayah')
                     ->label('NIK Ayah')
-                    // ->required()
-                    ->maxLength(255),
+                    ->numeric(),
                 Forms\Components\TextInput::make('tempat_lahir_ayah')
                     // ->required()
                     ->maxLength(255),
@@ -139,8 +139,7 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ibu')
                     ->label('NIK IBU')
-                    // ->required()
-                    ->maxLength(255),
+                    ->numeric(),
                 Forms\Components\TextInput::make('tempat_lahir_ibu')
                     // ->required()
                     ->maxLength(255),
@@ -170,8 +169,7 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_wali')
                     ->label('NIK Wali')
-                    // ->required()
-                    ->maxLength(255),
+                    ->numeric(),
                 Forms\Components\TextInput::make('tempat_lahir_wali')
                     // ->required()
                     ->maxLength(255),
