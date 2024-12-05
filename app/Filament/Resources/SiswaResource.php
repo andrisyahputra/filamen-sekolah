@@ -98,7 +98,7 @@ class SiswaResource extends Resource
                         ->label('Status Siswa')
                         ->options([
                             '1' => 'Lengkap',
-                            '2' => 'Yakim',
+                            '2' => 'Yatim',
                             '3' => 'Piatu',
                             '4' => 'Yatim Piatu',
                         ])
