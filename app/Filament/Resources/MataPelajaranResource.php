@@ -17,7 +17,7 @@ class MataPelajaranResource extends Resource
 {
     protected static ?string $model = MataPelajaran::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-table-cells';
     public static function getNavigationGroup(): string
     {
         return 'Data Guru'; // Nama grup

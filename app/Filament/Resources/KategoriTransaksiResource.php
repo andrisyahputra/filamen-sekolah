@@ -17,7 +17,7 @@ class KategoriTransaksiResource extends Resource
 {
     protected static ?string $model = KategoriTransaksi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-swatch';
     public static function getNavigationGroup(): string
     {
         return 'Data Keuangan'; // Nama grup

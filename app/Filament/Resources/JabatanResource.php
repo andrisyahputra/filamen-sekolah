@@ -17,7 +17,7 @@ class JabatanResource extends Resource
 {
     protected static ?string $model = Jabatan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-briefcase';
     public static function getNavigationGroup(): string
     {
         return 'Data Pengurus'; // Nama grup

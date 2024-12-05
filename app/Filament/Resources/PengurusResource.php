@@ -17,7 +17,7 @@ class PengurusResource extends Resource
 {
     protected static ?string $model = Pengurus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-user-group';
     public static function getNavigationGroup(): string
     {
         return 'Data Pengurus'; // Nama grup

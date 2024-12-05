@@ -20,7 +20,7 @@ class KelasResource extends Resource
 {
     protected static ?string $model = Kelas::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
     public static function getNavigationGroup(): string
     {
         return 'Data Guru'; // Nama grup
