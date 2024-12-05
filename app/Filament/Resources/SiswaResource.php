@@ -93,7 +93,19 @@ class SiswaResource extends Resource
                         ->numeric(),
                     Forms\Components\TextInput::make('kk')
                         ->label('Kartu Keluarga')
-                        ->numeric()
+                        ->numeric(),
+                    Forms\Components\Select::make('status_siswa')
+                        ->label('Status Siswa')
+                        ->options([
+                            '1' => 'Lengkap',
+                            '2' => 'Yakim',
+                            '3' => 'Piatu',
+                            '4' => 'Yatim Piatu',
+                        ])
+                        ->required()
+                        ->default('1')
+                        ->placeholder('Pilih Status Siswa'),
+
 
                     // Forms\Components\Textarea::make('Data Siswa')
                     //     ->required()
