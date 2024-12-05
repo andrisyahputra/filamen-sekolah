@@ -68,6 +68,7 @@ class SiswaResource extends Resource
                     Forms\Components\TextInput::make('nisn')
                         ->label('NISN')
                         ->required()
+                        ->unique()
                         ->maxLength(255),
                     Forms\Components\Select::make('jenis_kelamin')
                         ->label('Jenis Kelamin')

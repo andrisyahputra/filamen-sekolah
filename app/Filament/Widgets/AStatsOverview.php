@@ -2,11 +2,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Siswa;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class StatsOverview extends BaseWidget
+class AStatsOverview extends BaseWidget
 {
+
+    use InteractsWithPageFilters;
     protected function getColumns(): int
     {
         return 2; // Atur menjadi 2 kolom
@@ -25,6 +28,8 @@ class StatsOverview extends BaseWidget
             Stat::make('Jumlah Perempuan', $jumlahPerempuan)
                 ->description('Siswa berjenis kelamin perempuan')
                 ->color('secondary'),
+
+
         ];
     }
 }

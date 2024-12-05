@@ -43,9 +43,9 @@ class GuruResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('tanggal_lahir')
                     ->required(),
-                Forms\Components\TextInput::make('alamat')
-                    ->required()
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('alamat')
+                //     ->required()
+                //     ->maxLength(255),
                 Forms\Components\TextInput::make('pendidikan_terakhir')
                     ->required()
                     ->maxLength(255),
@@ -54,6 +54,18 @@ class GuruResource extends Resource
                     ->label('Mata Pelajaran')
                     ->relationship('mataPelajarans', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
                     ->required(),
+                Forms\Components\Select::make('status_guru')
+                    ->label('Status Guru')
+                    ->options([
+                        '1' => 'PNS',
+                        '2' => 'PPPK',
+                        '3' => 'HONOR',
+                    ])
+                    ->required()
+                    ->placeholder('Pilih Status Guru'),
+                Forms\Components\Textarea::make('alamat')
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -63,8 +75,23 @@ class GuruResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('gambar')
                     ->circular(),
+                Tables\Columns\TextColumn::make('status_guru')
+                    ->label('Status Guru') // Label untuk kolom
+                    ->formatStateUsing(function ($state) {
+                        // dd($state);
+                        return match ($state) {
+                            1 => 'PNS',
+                            2 => 'PPPK',
+                            3 => 'HONOR',
+                            default => 'Tidak Diketahui',
+                        };
+                    }) // Format nilai numerik menjadi teks
+                    ->sortable() // Tambahkan kemampuan untuk mengurutkan
+                    ->searchable(), // Tambahkan kemampuan pencarian
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                // Tables\Columns\TextColumn::make('status_guru')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('nip_pns')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nik_swasta')
