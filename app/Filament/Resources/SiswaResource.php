@@ -102,7 +102,6 @@ class SiswaResource extends Resource
                             '3' => 'Piatu',
                             '4' => 'Yatim Piatu',
                         ])
-                        ->required()
                         ->default('1')
                         ->placeholder('Pilih Status Siswa'),
 
