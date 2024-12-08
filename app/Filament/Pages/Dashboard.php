@@ -20,13 +20,13 @@ class Dashboard extends BaseDashboard
                 Section::make()
                     ->schema([
                         DatePicker::make('startDate')
-                            ->default(now()) // Default awal ke hari ini
-                            ->maxDate(fn(Get $get) => $get('endDate') ?: now()->addMonth()), // Maksimum mengikuti endDate atau 1 bulan dari sekarang
+                            ->default(now()->subMonth()) // Default awal ke hari ini
+                            ->maxDate(fn(Get $get) => $get('endDate') ?: now()->subMonth()), // Maksimum mengikuti endDate atau 1 bulan dari sekarang
 
                         DatePicker::make('endDate')
-                            ->default(now()->addMonth()) // Default awal ke 1 bulan dari hari ini
+                            ->default(now()) // Default awal ke 1 bulan dari hari ini
                             ->minDate(fn(Get $get) => $get('startDate') ?: now()) // Minimum mengikuti startDate atau hari ini
-                            ->maxDate(now()->addMonth()), // Maksimum 1 bulan dari hari ini
+                        // ->maxDate(now()), // Maksimum 1 bulan dari hari ini
                     ])
                     ->columns(2),
             ]);

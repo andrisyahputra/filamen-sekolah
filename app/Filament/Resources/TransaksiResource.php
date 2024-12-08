@@ -93,7 +93,7 @@ class TransaksiResource extends Resource
                     ->numeric()
                     ->money('IDR', locale: 'id')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('gambar'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

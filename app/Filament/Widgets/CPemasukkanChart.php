@@ -12,19 +12,19 @@ use Illuminate\Support\Carbon;
 class CPemasukkanChart extends ChartWidget
 {
     use InteractsWithPageFilters;
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Pemasukkan';
 
-    protected static string $color = 'success';
+    // protected static string $color = 'success';
 
     protected function getData(): array
     {
-        $startDate = !is_null($this->filters['startDate'] ?? null) ?
-            Carbon::parse($this->filters['startDate']) :
-            now();
-
         $endDate = !is_null($this->filters['endDate'] ?? null) ?
             Carbon::parse($this->filters['endDate']) :
-            $startDate->copy()->addMonth();
+            now();
+
+        $startDate = !is_null($this->filters['startDate'] ?? null) ?
+            Carbon::parse($this->filters['startDate']) :
+            $endDate->copy()->subMonth();
 
         $data = Trend::query(
             Transaksi::pemasukkan()

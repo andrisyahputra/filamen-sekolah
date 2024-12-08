@@ -9,7 +9,6 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class AStatsOverview extends BaseWidget
 {
 
-    use InteractsWithPageFilters;
     protected function getColumns(): int
     {
         return 2; // Atur menjadi 2 kolom
