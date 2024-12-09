@@ -59,65 +59,81 @@
 <body>
     <div class="header">
         <h1>Laporan Data Keuangan</h1>
-        <p><strong>Periode:</strong> {{ $start_date }} - {{ $end_date }}</p>
+        <p><strong>Periode Bulan:</strong> {{ $bulan }} </p>
     </div>
 
     <table>
         <thead>
             <tr>
                 <th>#</th>
-                <th>Nama</th>
+                {{-- <th>Nama</th> --}}
                 <th>Nama Kategori</th>
-                <th>Tipe</th>
+                <th>Keterangan</th>
                 <th>Tanggal Transaksi</th>
-                <th>Jumlah</th>
-                <th>Gambar</th>
+                <th>Debet</th>
+                <th>Kredit</th>
+                <th>Saldo</th>
                 {{-- <th>Dibuat Pada</th>
                 <th>Diperbarui Pada</th>
                 <th>Dihapus Pada</th> --}}
             </tr>
         </thead>
         <tbody>
-            <@php
-                $total_jumlah = 0;
-            @endphp @foreach ($records as $record)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $record->name }}</td>
-                    <td>{{ $record->kategori_transaksi->name }}</td>
-                    <td>
-                        @if ($record->kategori_transaksi->jenis_transaksi)
-                            <span style="color: green;">↑</span> Pemasukkan
-                        @else
-                            <span style="color: red;">↓</span> Pengeluaran
-                        @endif
-                    </td>
-                    <td>{{ \Carbon\Carbon::parse($record->tgl_transaksi)->format('d-m-Y') }}</td>
-                    <td>{{ number_format($record->jumlah, 0, ',', '.') }}</td>
-                    <td>
-                        @if ($record->gambar)
-                            <img src="{{ asset('storage/' . $record->gambar) }}" alt="Image" width="100">
-                        @else
-                            No Image
-                        @endif
-                    </td>
-                    {{-- <td>{{ \Carbon\Carbon::parse($record->created_at)->format('d-m-Y H:i:s') }}</td> --}}
-                    {{-- <td>{{ \Carbon\Carbon::parse($record->updated_at)->format('d-m-Y H:i:s') }}</td>
-                <td>{{ $record->deleted_at ? \Carbon\Carbon::parse($record->deleted_at)->format('d-m-Y H:i:s') : 'N/A' }}</td> --}}
-                </tr>
+
+            @php
+                $total_debet = 0;
+                $total_kredit = 0;
+                $total_jumlah = $saldo_awal;
+            @endphp
+            <tr class="total-row">
+                <td colspan="4" style="text-align: left;">Saldo Awal</td>
+                <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
+                <td></td>
+                <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
+            </tr>
+            @foreach ($records as $record)
                 @php
                     if ($record->kategori_transaksi->jenis_transaksi) {
                         $total_jumlah += $record->jumlah;
+                        $total_debet += $record->jumlah;
                     } else {
                         $total_jumlah -= $record->jumlah;
+                        $total_kredit += $record->jumlah;
                     }
                 @endphp
-                @endforeach
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ \Carbon\Carbon::parse($record->tgl_transaksi)->format('d-m-Y') }}</td>
+                    {{-- <td>{{ $record->name }}</td> --}}
+                    <td>{{ $record->kategori_transaksi->name }}</td>
+                    <td>{{ $record->keterangan }}</td>
+                    @if ($record->kategori_transaksi->jenis_transaksi)
+                        <td style="text-align: right;">{{ number_format($record->jumlah, 0, ',', '.') }}</td>
+                        <td style="text-align: right;"></td>
+                        <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
+
+                        {{-- <span style="color: green;">↑</span> Pemasukkan --}}
+                    @else
+                        <td style="text-align: right;"></td>
+                        <td style="text-align: right;">{{ number_format($record->jumlah, 0, ',', '.') }}</td>
+                        <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
+                        {{-- <span style="color: red;">↓</span> Pengeluaran --}}
+                    @endif
+
+
+
+                    {{-- <td style="text-align: right;">{{ \Carbon\Carbon::parse($record->created_at)->format('d-m-Y H:i:s') }}</td> --}}
+                    {{-- <td style="text-align: right;">{{ \Carbon\Carbon::parse($record->updated_at)->format('d-m-Y H:i:s') }}</td>
+                <td style="text-align: right;">{{ $record->deleted_at ? \Carbon\Carbon::parse($record->deleted_at)->format('d-m-Y H:i:s') : 'N/A' }}</td> --}}
+                </tr>
+            @endforeach
         <tfoot>
             <tr class="total-row">
-                <td colspan="5" style="text-align: right;">Total Jumlah</td>
-                <td>{{ number_format($total_jumlah, 0, ',', '.') }}</td>
-                <td colspan="1"></td>
+                <td colspan="4" style="text-align: center;">Total</td>
+                <td style="text-align: right;">{{ number_format($total_debet, 0, ',', '.') }}</td>
+                <td style="text-align: right;">{{ number_format($total_kredit, 0, ',', '.') }}</td>
+                <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
+                {{-- <td colspan="1"></td> --}}
             </tr>
         </tfoot>
         </tbody>
@@ -126,12 +142,23 @@
     <div class="footer">
         <!-- Tanda Tangan Kiri -->
         <div class="signature">
-            <p>Tanda Tangan Kiri</p>
+            {{-- @dd($ketua_umum) --}}
+            <p> {{ $ketua_umum->name ?? '' }}
+                <br>
+                ( {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }} )
+            </p>
+        </div>
+        <div class="signature">
+            <p> {{ $kepala_sekolah->name ?? '' }}
+                <br>( {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }} )
+            </p>
         </div>
 
         <!-- Tanda Tangan Kanan -->
         <div class="signature">
-            <p>Tanda Tangan Kanan</p>
+            <p> {{ $bendahara->name ?? '' }}
+                <br>( {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }} )
+            </p>
         </div>
     </div>
 

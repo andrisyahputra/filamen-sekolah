@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransaksiResource\Pages;
 use App\Filament\Resources\TransaksiResource\RelationManagers;
+use App\Models\KategoriTransaksi;
 use App\Models\Transaksi;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -37,13 +38,27 @@ class TransaksiResource extends Resource
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
+                                // Forms\Components\TextInput::make('name')
+                                //     ->required()
+                                //     ->maxLength(255),
                                 Forms\Components\Select::make('kategori_transaksis_id')
-                                    ->relationship('kategori_transaksi', 'name')
+                                    ->label('Kategori Transaksi')
+                                    ->options(function () {
+                                        return KategoriTransaksi::all()->mapWithKeys(function ($item) {
+                                            if ($item->jenis_transaksi) {
+                                                $labe = "{$item->name} - (Pengeluaran)";
+                                            } else {
+                                                $labe = "{$item->name} - (Pemasukkan)";
+                                            }
+
+                                            $label = $labe ?? 'Tidak Diketahui';
+                                            return [$item->id => $label];
+                                        });
+                                    })
                                     ->preload()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->required(),
+
                                 Forms\Components\DatePicker::make('tgl_transaksi')
                                     ->required(),
                                 Forms\Components\TextInput::make('jumlah')
@@ -73,8 +88,8 @@ class TransaksiResource extends Resource
                 //     ->numeric()
                 //     ->sortable(),
 
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('name')
+                //     ->searchable(),
                 Tables\Columns\TextColumn::make('kategori_transaksi.name')
                     ->label('Nama Kategori')
                     ->description(fn(Transaksi $record): string => $record->keterangan),

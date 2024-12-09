@@ -19,6 +19,15 @@ class Transaksi extends Model
     {
         return $this->belongsTo(KategoriTransaksi::class, 'kategori_transaksis_id', 'id');
     }
+    public function getKategoriTransaksiJenisAttribute(): string
+    {
+        // Pastikan kategori_transaksi ada sebelum mengaksesnya
+        if ($this->kategori_transaksi->jenis_transaksi) {
+            return "{$this->kategori_transaksi->name} - (Pengeluaran)";
+        }
+
+        return "{$this->kategori_transaksi->name} - (Pemasukkan)";
+    }
     public function scopePengeluaran($query)
     {
         return $this->whereHas('kategori_transaksi', function ($query) {
@@ -31,4 +40,5 @@ class Transaksi extends Model
             $query->where('jenis_transaksi', true);
         });
     }
+
 }
