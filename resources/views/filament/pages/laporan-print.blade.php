@@ -67,12 +67,12 @@
             <tr>
                 <th>#</th>
                 {{-- <th>Nama</th> --}}
+                <th>Tanggal Transaksi</th>
                 <th>Nama Kategori</th>
                 <th>Keterangan</th>
-                <th>Tanggal Transaksi</th>
                 <th>Debet</th>
                 <th>Kredit</th>
-                <th>Saldo</th>
+                <th>Jumlah</th>
                 {{-- <th>Dibuat Pada</th>
                 <th>Diperbarui Pada</th>
                 <th>Dihapus Pada</th> --}}
@@ -143,21 +143,35 @@
         <!-- Tanda Tangan Kiri -->
         <div class="signature">
             {{-- @dd($ketua_umum) --}}
-            <p> {{ $ketua_umum->name ?? '' }}
-                <br>
-                ( {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }} )
-            </p>
+            {{ $ketua_umum->name ?? '' }}
+            <br>
+            ( {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }} )
+            <br>
+            <br>
+            <br>
+            <br>
+            <p></p>
         </div>
         <div class="signature">
-            <p> {{ $kepala_sekolah->name ?? '' }}
-                <br>( {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }} )
+            {{ $kepala_sekolah->name ?? '' }}
+            <br>( {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }} )
+            <br>
+            <br>
+            <br>
+            <br>
+            <p>
             </p>
         </div>
 
         <!-- Tanda Tangan Kanan -->
         <div class="signature">
-            <p> {{ $bendahara->name ?? '' }}
-                <br>( {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }} )
+            {{ $bendahara->name ?? '' }}
+            <br>( {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }} )
+            <br>
+            <br>
+            <br>
+            <br>
+            <p>
             </p>
         </div>
     </div>
