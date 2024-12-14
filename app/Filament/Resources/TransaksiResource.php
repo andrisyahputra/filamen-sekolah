@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiResource extends Resource
 {
@@ -58,6 +59,64 @@ class TransaksiResource extends Resource
                                     ->preload()
                                     ->searchable()
                                     ->required(),
+                                // Forms\Components\Select::make('tipe')
+                                //     ->label('Status Siswa')
+                                //     ->options([
+                                //         '1' => 'Bendahara Sekolah',
+                                //         '2' => 'Bendahara danabos',
+                                //         '3' => 'Bendahara Bkm',
+                                //     ])
+                                //     ->default('1')
+                                //     ->placeholder('Pilih Tipe Transaksi'),
+                                Forms\Components\Select::make('tipe')
+                                    ->label('Status Transaksi')
+                                    ->options(function () {
+                                        // Check if user is a super admin (show all options)
+                                        if (auth()->user()->hasRole('super_admin')) {
+                                            return [
+                                                '1' => 'Bendahara Sekolah',
+                                                '2' => 'Bendahara Dana BOS',
+                                                '3' => 'Bendahara BKM',
+                                            ];
+                                        }
+
+                                        // Dynamically set options based on user role
+                                        $options = [];
+
+                                        if (auth()->user()->hasRole('bendahara_sekolah')) {
+                                            $options['1'] = 'Bendahara Sekolah';
+                                        }
+
+                                        if (auth()->user()->hasRole('bendahara_dana_bos')) {
+                                            $options['2'] = 'Bendahara Dana BOS';
+                                        }
+
+                                        if (auth()->user()->hasRole('bendahara_bkm')) {
+                                            $options['3'] = 'Bendahara BKM';
+                                        }
+
+                                        // If no specific role matched, return empty array
+                                        return $options;
+                                    })
+                                    ->default(function () {
+                                        // Set default based on user's primary role
+                                        if (auth()->user()->hasRole('bendahara_sekolah')) {
+                                            return '1';
+                                        }
+
+                                        if (auth()->user()->hasRole('bendahara_dana_bos')) {
+                                            return '2';
+                                        }
+
+                                        if (auth()->user()->hasRole('bendahara_bkm')) {
+                                            return '3';
+                                        }
+
+                                        return null;
+                                    })
+                                    ->placeholder('Pilih Tipe Transaksi')
+                                    ->required()
+                                    ->reactive(),
 
                                 Forms\Components\DatePicker::make('tgl_transaksi')
                                     ->required(),
@@ -83,6 +142,25 @@ class TransaksiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+
+                // If super admin, show all transactions
+                if ($user->hasRole('super_admin')) {
+                    return $query;
+                }
+
+                // Filter based on user's specific roles
+                if ($user->hasRole('bendahara_sekolah')) {
+                    $query->where('tipe', '1');
+                } elseif ($user->hasRole('bendahara_dana_bos')) {
+                    $query->where('tipe', '2');
+                } elseif ($user->hasRole('bendahara_bkm')) {
+                    $query->where('tipe', '3');
+                }
+
+                return $query;
+            })
             ->columns([
                 // Tables\Columns\TextColumn::make('kategori_transaksis_id')
                 //     ->numeric()

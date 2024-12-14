@@ -87,7 +87,7 @@
                 $total_jumlah = $saldo_awal;
             @endphp
             <tr class="total-row">
-                <td colspan="4" style="text-align: center;">Saldo Awal</td>
+                <td colspan="3" style="text-align: center;">Saldo Awal</td>
                 <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
                 <td></td>
                 <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>
@@ -130,7 +130,7 @@
             @endforeach
         <tfoot>
             <tr class="total-row">
-                <td colspan="4" style="text-align: right;">Total </td>
+                <td colspan="3" style="text-align: right;">Total </td>
                 <td style="text-align: right;">{{ number_format($total_debet, 0, ',', '.') }}</td>
                 <td style="text-align: right;">{{ number_format($total_kredit, 0, ',', '.') }}</td>
                 <td style="text-align: right;">{{ number_format($total_jumlah, 0, ',', '.') }}</td>

@@ -105,17 +105,17 @@ class Laporan extends Page
                 ->whereMonth('tgl_transaksi', $bulan)
                 ->when($tipe === 'sekolah', function ($query) {
                     return $query->whereHas('kategori_transaksi', function ($q) {
-                        // $q->where('tipe', 'sekolah');
+                        $q->where('tipe', '1');
                     });
                 })
                 ->when($tipe === 'danabos', function ($query) {
                     return $query->whereHas('kategori_transaksi', function ($q) {
-                        // $q->where('tipe', 'danabos');
+                        $q->where('tipe', '2');
                     });
                 })
                 ->when($tipe === 'bkm', function ($query) {
                     return $query->whereHas('kategori_transaksi', function ($q) {
-                        // $q->where('tipe', 'bkm');
+                        $q->where('tipe', '3');
                     });
                 })
                 ->get(),
