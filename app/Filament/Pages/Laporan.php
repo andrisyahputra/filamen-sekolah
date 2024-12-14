@@ -2,22 +2,20 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Pengurus;
 use App\Models\Transaksi;
+use App\Models\Pengurus;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 
 class Laporan extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static string $view = 'filament.pages.laporan';
 
-    public ?string $start_date = null;
-    public ?string $end_date = null;
+    public ?string $bulan = null;
 
     public static function getNavigationGroup(): string
     {
@@ -29,11 +27,9 @@ class Laporan extends Page
         return 3;
     }
 
-    public $bulan; // Tambahkan properti untuk menyimpan nilai bulan
-
     public function mount(): void
     {
-        // Set nilai awal bulan saat ini
+        // Set default to current month
         $this->bulan = now()->month;
     }
 
@@ -41,7 +37,7 @@ class Laporan extends Page
     {
         return [
             Card::make()->schema([
-                Grid::make()->columns(2)->schema([
+                Grid::make()->columns(1)->schema([
                     Select::make('bulan')
                         ->label('Pilih Bulan')
                         ->options([
@@ -60,14 +56,85 @@ class Laporan extends Page
                         ])
                         ->required()
                         ->placeholder('Pilih Bulan')
-                        ->reactive() // Perbarui properti saat nilai berubah
-                        ->default($this->bulan) // Tetapkan default berdasarkan properti
-                        ->afterStateUpdated(fn($state) => $this->bulan = $state), // Perbarui nilai properti saat dipilih
+                        ->reactive()
+                        ->default($this->bulan)
+                        ->afterStateUpdated(fn($state) => $this->bulan = $state),
                 ]),
             ]),
         ];
     }
 
+    public function create_print_sekolah()
+    {
+        return redirect()->route('laporan.print_sekolah', ['bulan' => $this->bulan]);
+    }
+
+    public function create_print_danabos()
+    {
+        return redirect()->route('laporan.print_danabos', ['bulan' => $this->bulan]);
+    }
+
+    public function create_print_bkm()
+    {
+        return redirect()->route('laporan.print_bkm', ['bulan' => $this->bulan]);
+    }
+
+    public function print_sekolah($bulan)
+    {
+        $data = $this->prepareReportData($bulan, 'sekolah');
+        return view('filament.pages.laporan-print-sekolah', $data);
+    }
+
+    public function print_danabos($bulan)
+    {
+        $data = $this->prepareReportData($bulan, 'danabos');
+        return view('filament.pages.laporan-print-danabos', $data);
+    }
+
+    public function print_bkm($bulan)
+    {
+        $data = $this->prepareReportData($bulan, 'bkm');
+        return view('filament.pages.laporan-print-bkm', $data);
+    }
+
+    protected function prepareReportData($bulan, $tipe)
+    {
+        $data = [
+            'bulan' => formatBulan($bulan),
+            'records' => Transaksi::with('kategori_transaksi')
+                ->whereMonth('tgl_transaksi', $bulan)
+                ->when($tipe === 'sekolah', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        // $q->where('tipe', 'sekolah');
+                    });
+                })
+                ->when($tipe === 'danabos', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        // $q->where('tipe', 'danabos');
+                    });
+                })
+                ->when($tipe === 'bkm', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        // $q->where('tipe', 'bkm');
+                    });
+                })
+                ->get(),
+            'saldo_awal' => Transaksi::with('kategori_transaksi')
+                ->whereMonth('tgl_transaksi', '<', $bulan)
+                ->sum('jumlah'),
+            'ketua_umum' => Pengurus::whereHas('jabatan', function ($query) {
+                $query->where('name', 'like', '%ketua umum%');
+            })->with('jabatan')->first(),
+            'bendahara' => Pengurus::whereHas('jabatan', function ($query) {
+                $query->where('name', 'like', '%bendahara sekolah%');
+            })->with('jabatan')->first(),
+            'kepala_sekolah' => Pengurus::whereHas('jabatan', function ($query) {
+                $query->where('name', 'like', '%kepala sekolah%');
+            })->with('jabatan')->first(),
+        ];
+
+        return $data;
+    }
     public function print()
     {
 
@@ -99,14 +166,5 @@ class Laporan extends Page
 
 
         return view('filament.pages.laporan-print', $data);
-    }
-
-    protected function getReportData(): array
-    {
-        // Simulasi data laporan
-        return [
-            ['id' => 1, 'name' => 'Laporan 1', 'amount' => 1000],
-            ['id' => 2, 'name' => 'Laporan 2', 'amount' => 2000],
-        ];
     }
 }

@@ -58,7 +58,7 @@
 
 <body>
     <div class="header">
-        <h1>Laporan Data Keuangan <br> Sekolah</h1>
+        <h1>Laporan Data Keuangan <br> Dana Bos</h1>
         <p><strong>Periode Bulan:</strong> {{ $bulan }} </p>
     </div>
 
