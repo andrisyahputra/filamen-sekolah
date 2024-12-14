@@ -133,7 +133,8 @@ class TransaksiResource extends Resource
                                 Forms\Components\Textarea::make('keterangan')
                                     ->required()
                                     ->columnSpanFull(),
-                                Forms\Components\FileUpload::make('gambar'),
+                                Forms\Components\FileUpload::make('gambar')
+                                    ->required(),
                             ])
                     ])
             ]);
