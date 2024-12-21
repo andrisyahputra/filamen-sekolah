@@ -51,11 +51,21 @@
             width: 30%;
         }
 
+        .signature span {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
         .signature p {
             margin-bottom: 60px;
             border-bottom: 1px solid black;
             display: inline-block;
             width: 80%;
+        }
+
+        .signature p:last-child {
+            margin-top: auto;
+            /* Menjaga agar p terakhir (tanda tangan) selalu berada di bawah */
         }
     </style>
 </head>
@@ -148,22 +158,25 @@
         <table class="signature-table" border="0">
             <tr>
                 <!-- Tanda Tangan Kiri -->
-                <td class="signature">
-                    {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }}
-                    <p style="margin-top: 100px"> {{ $ketua_umum->name ?? '' }} </p>
-                </td>
 
-                <!-- Tanda Tangan Tengah -->
                 <td class="signature">
-                    {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }}
+                    <span>{{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }}</span>
+
+                    <p style="margin-top: 100px"> {{ $ketua_umum->name ?? '' }} </p>
+
+                <td class="signature">
+                    <span>{{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }}</span>
+
+
                     <p style="margin-top: 100px"> {{ $kepala_sekolah->name ?? '' }} </p>
                 </td>
 
-                <!-- Tanda Tangan Kanan -->
                 <td class="signature">
-                    {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }}
+                    <span>{{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }}</span>
+
                     <p style="margin-top: 100px">{{ $bendahara->name ?? '' }} </p>
                 </td>
+
             </tr>
         </table>
     </div>
