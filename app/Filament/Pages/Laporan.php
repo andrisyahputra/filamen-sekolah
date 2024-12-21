@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Transaksi;
 use App\Models\Pengurus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
@@ -82,19 +83,42 @@ class Laporan extends Page
     public function print_sekolah($bulan)
     {
         $data = $this->prepareReportData($bulan, 'sekolah');
-        return view('filament.pages.laporan-print-sekolah', $data);
+        $pdf = Pdf::loadView('filament.pages.laporan-print-sekolah', $data);
+        // Set ukuran kertas A4 dan margin
+        $pdf->setPaper('A4', 'portrait'); // Ukuran A4, orientasi potrait
+
+
+        // Menampilkan PDF di browser
+        return $pdf->stream('laporan-keuangan-sekolah.pdf');
+        // return view('filament.pages.laporan-print-sekolah', $data);
     }
 
     public function print_danabos($bulan)
     {
         $data = $this->prepareReportData($bulan, 'danabos');
-        return view('filament.pages.laporan-print-danabos', $data);
+        $pdf = Pdf::loadView('filament.pages.laporan-print-danabos', $data);
+        // Set ukuran kertas A4 dan margin
+        $pdf->setPaper('A4', 'portrait'); // Ukuran A4, orientasi potrait
+
+
+        // Menampilkan PDF di browser
+        return $pdf->stream('laporan-keuangan-danabos.pdf');
+        // return view('filament.pages.laporan-prin
+        // return view('filament.pages.laporan-print-danabos', $data);
     }
 
     public function print_bkm($bulan)
     {
         $data = $this->prepareReportData($bulan, 'bkm');
-        return view('filament.pages.laporan-print-bkm', $data);
+        $pdf = Pdf::loadView('filament.pages.laporan-print-bkm', $data);
+        // Set ukuran kertas A4 dan margin
+        $pdf->setPaper('A4', 'portrait'); // Ukuran A4, orientasi potrait
+
+
+        // Menampilkan PDF di browser
+        return $pdf->stream('laporan-keuangan-bkm.pdf');
+        // return view('filament.pages.laporan-prin
+        // return view('filament.pages.laporan-print-bkm', $data);
     }
 
     protected function prepareReportData($bulan, $tipe)
@@ -165,6 +189,11 @@ class Laporan extends Page
         // $data['total_jumlah'] = $data['records']->sum('jumlah');
 
 
-        return view('filament.pages.laporan-print', $data);
+        // return view('filament.pages.laporan-print', $data);
+        // Render view menjadi PDF
+        $pdf = Pdf::loadView('filament.pages.laporan-print', $data);
+
+        // Menampilkan PDF di browser
+        return $pdf->stream('laporan-keuangan.pdf');
     }
 }

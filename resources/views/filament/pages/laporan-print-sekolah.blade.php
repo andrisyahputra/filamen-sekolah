@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan</title>
     <style>
+        @page {
+            margin: 0mm 0mm;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -17,9 +21,9 @@
             margin: 20px 0;
         }
 
-        table,
-        th,
-        td {
+        .table-style table,
+        .table-style th,
+        .table-style td {
             border: 1px solid black;
         }
 
@@ -48,8 +52,8 @@
         }
 
         .signature p {
-            margin-top: 60px;
-            border-top: 1px solid black;
+            margin-bottom: 60px;
+            border-bottom: 1px solid black;
             display: inline-block;
             width: 80%;
         }
@@ -63,7 +67,7 @@
     </div>
 
     <p style="text-align: right;">Tgl Cetak : <?= date('d F Y') ?></p>
-    <table>
+    <table class="table-style">
         <thead>
             <tr>
                 <th>#</th>
@@ -141,52 +145,42 @@
     </table>
 
     <div class="footer">
-        <!-- Tanda Tangan Kiri -->
-        <div class="signature">
-            {{-- @dd($ketua_umum) --}}
-            {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }}
-            <br>
-            <br>
-            <br>
-            <br>
-            <p>
-                ( {{ $ketua_umum->name ?? '' }} )
-            </p>
+        <table class="signature-table" border="0">
+            <tr>
+                <!-- Tanda Tangan Kiri -->
+                <td class="signature">
+                    {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }}
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p> {{ $ketua_umum->name ?? '' }} </p>
+                </td>
 
-        </div>
-        <div class="signature">
+                <!-- Tanda Tangan Tengah -->
+                <td class="signature">
+                    {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }}
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p> {{ $kepala_sekolah->name ?? '' }} </p>
+                </td>
 
-            {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }}
-            <br>
-            <br>
-            <br>
-            <br>
-            <p>
-                ( {{ $kepala_sekolah->name ?? '' }} )
-            </p>
-
-        </div>
-
-        <!-- Tanda Tangan Kanan -->
-        <div class="signature">
-
-            {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }}
-            <br>
-            <br>
-            <br>
-            <br>
-            <p>
-                ( {{ $bendahara->name ?? '' }} )
-            </p>
-
-        </div>
+                <!-- Tanda Tangan Kanan -->
+                <td class="signature">
+                    {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }}
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p> {{ $bendahara->name ?? '' }} </p>
+                </td>
+            </tr>
+        </table>
     </div>
 
-    <script>
-        window.onload = function() {
-            window.print();
-        };
-    </script>
+
 </body>
 
 </html>
