@@ -150,31 +150,19 @@
                 <!-- Tanda Tangan Kiri -->
                 <td class="signature">
                     {{ $ketua_umum->jabatan->name ?? 'KETUA UMUM' }}
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <p> {{ $ketua_umum->name ?? '' }} </p>
+                    <p style="margin-top: 100px"> {{ $ketua_umum->name ?? '' }} </p>
                 </td>
 
                 <!-- Tanda Tangan Tengah -->
                 <td class="signature">
                     {{ $kepala_sekolah->jabatan->name ?? 'KEPALA SEKOLAH' }}
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <p> {{ $kepala_sekolah->name ?? '' }} </p>
+                    <p style="margin-top: 100px"> {{ $kepala_sekolah->name ?? '' }} </p>
                 </td>
 
                 <!-- Tanda Tangan Kanan -->
                 <td class="signature">
                     {{ $bendahara->jabatan->name ?? 'BENDAHARA SEKOLAH' }}
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <p> {{ $bendahara->name ?? '' }} </p>
+                    <p style="margin-top: 100px">{{ $bendahara->name ?? '' }} </p>
                 </td>
             </tr>
         </table>
