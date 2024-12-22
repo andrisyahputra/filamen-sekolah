@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\ValidationException;
 
 class SiswaResource extends Resource
 {
@@ -68,8 +69,22 @@ class SiswaResource extends Resource
                     Forms\Components\TextInput::make('nisn')
                         ->label('NISN')
                         ->required()
-                        ->unique()
-                        ->maxLength(255),
+                        ->numeric()
+                        ->maxLength(255)
+                        // ->unique()
+                        ->rule(function (callable $get, $record) {
+                            // Ambil nilai saat ini dari database
+                            $currentNisn = $record?->nisn;
+
+                            // Periksa apakah nilai berubah
+                            if ($get('nisn') !== $currentNisn) {
+                                // Jika berubah, tambahkan aturan unik
+                                return ['unique:siswas,nisn'];
+                            }
+
+                            // Jika tidak berubah, tidak ada aturan unik
+                            return [];
+                        }),
                     Forms\Components\Select::make('jenis_kelamin')
                         ->label('Jenis Kelamin')
                         ->options([
@@ -79,22 +94,29 @@ class SiswaResource extends Resource
                         ->required()
                         ->placeholder('Pilih Jenis Kelamin'),
                     Forms\Components\DatePicker::make('tgl_lahir_siswa')
+                        ->date()
                         ->required(),
                     Forms\Components\TextInput::make('tempat_lahir_siswa')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\DatePicker::make('tahun_ajaran_daftar')
+                        ->required()
                         ->label('Pendaftaran'),
                     Forms\Components\TextInput::make('tahun_ajaran')
                         ->label('Tahun Ajaran')
                         ->numeric()
-                        ->default(now()->year),
+                        ->required()
+                        ->rules(['digits:4'])
+                        ->validationAttribute('Tahun Ajaran'),
                     Forms\Components\TextInput::make('anak_berapa')
                         ->label('Anak Ke')
                         ->numeric(),
                     Forms\Components\TextInput::make('kk')
                         ->label('Kartu Keluarga')
-                        ->numeric(),
+                        ->nullable() // Perbolehkan null
+                        ->rules(['nullable', 'numeric'])  // Hanya validasi numeric jika diisi
+                        ->maxLength(16) // Opsional: batas panjang maksimum
+                        ->helperText('Kosongkan jika tidak ada KK'), // Teks bantu untuk pengguna
                     Forms\Components\Select::make('status_siswa')
                         ->label('Status Siswa')
                         ->options([
@@ -104,6 +126,8 @@ class SiswaResource extends Resource
                             '4' => 'Yatim Piatu',
                         ])
                         ->default('1')
+
+                        ->required()
                         ->placeholder('Pilih Status Siswa'),
 
 
@@ -121,12 +145,14 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ayah')
                     ->label('NIK Ayah')
-                    ->numeric(),
+                    ->nullable()
+                    ->rules(['nullable', 'numeric'])  // Hanya validasi numeric jika diisi
+                    ->maxLength(16) // Opsional: batas panjang maksimum
+                    ->helperText('Kosongkan jika tidak ada NIK'),
                 Forms\Components\TextInput::make('tempat_lahir_ayah')
                     // ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal_lahir_ayah')
-                ,// ->required(),
+                Forms\Components\DatePicker::make('tanggal_lahir_ayah'), // ->required(),
                 Forms\Components\TextInput::make('no_hp_ayah')
                     ->label('NO TLP/WA Ayah')
                     // ->required()
@@ -151,12 +177,14 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_ibu')
                     ->label('NIK IBU')
-                    ->numeric(),
+                    ->nullable() // Perbolehkan null
+                    ->rules(['nullable', 'numeric'])  // Hanya validasi numeric jika diisi
+                    ->maxLength(16) // Opsional: batas panjang maksimum
+                    ->helperText('Kosongkan jika tidak ada NIK'), // Teks bantu untuk pengguna
                 Forms\Components\TextInput::make('tempat_lahir_ibu')
                     // ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('tanggal_lahir_ibu')
-                ,// ->required(),
+                Forms\Components\DatePicker::make('tanggal_lahir_ibu'), // ->required(),
                 Forms\Components\TextInput::make('no_hp_ibu')
                     ->label('NO TLP/WA Ibu')
                     // ->required()
@@ -181,7 +209,10 @@ class SiswaResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('nik_wali')
                     ->label('NIK Wali')
-                    ->numeric(),
+                    ->nullable() // Perbolehkan null
+                    ->rules(['nullable', 'numeric'])  // Hanya validasi numeric jika diisi
+                    ->maxLength(16) // Opsional: batas panjang maksimum
+                    ->helperText('Kosongkan jika tidak ada NIK'), // Teks bantu untuk pengguna
                 Forms\Components\TextInput::make('tempat_lahir_wali')
                     // ->required()
                     ->maxLength(255),
