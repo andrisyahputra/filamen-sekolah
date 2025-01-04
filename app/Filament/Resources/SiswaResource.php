@@ -28,6 +28,7 @@ class SiswaResource extends Resource
         return 1; // Nilai kecil untuk prioritas tinggi
     }
 
+
     public static function form(Form $form): Form
     {
         $schema = [
@@ -303,7 +304,8 @@ class SiswaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSiswas::route('/'),
+            'index' => Pages\ByKelasSiswa::route('/'),
+            'kelas' => Pages\ListSiswas::route('/{record}/kelas'),
             'create' => Pages\CreateSiswa::route('/create'),
             'edit' => Pages\EditSiswa::route('/{record}/edit'),
         ];
