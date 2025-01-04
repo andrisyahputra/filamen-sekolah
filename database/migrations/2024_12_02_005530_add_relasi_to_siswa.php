@@ -13,9 +13,9 @@ return new class extends Migration {
         Schema::table('siswas', function (Blueprint $table) {
             //
             $table->foreignId('id_kelas')->nullable()->constrained('kelas');
-            $table->foreignId('id_ibu')->nullable()->constrained('ibus');
-            $table->foreignId('id_ayah')->nullable()->constrained('ayahs');
-            $table->foreignId('id_wali')->nullable()->constrained('walis');
+            // $table->foreignId('id_ibu')->nullable()->constrained('ibus');
+            // $table->foreignId('id_ayah')->nullable()->constrained('ayahs');
+            // $table->foreignId('id_wali')->nullable()->constrained('walis');
         });
     }
 
@@ -27,9 +27,9 @@ return new class extends Migration {
         Schema::table('siswas', function (Blueprint $table) {
             //
             $table->dropColumn('id_kelas');
-            $table->dropColumn('id_ibu');
-            $table->dropColumn('id_ayah');
-            $table->dropColumn('id_wali');
+            // $table->dropColumn('id_ibu');
+            // $table->dropColumn('id_ayah');
+            // $table->dropColumn('id_wali');
         });
     }
 };

@@ -30,38 +30,9 @@ class SiswaResource extends Resource
 
     public static function form(Form $form): Form
     {
-        // return $form
-        //     ->schema([
-        //         Forms\Components\TextInput::make('name')
-        //             ->required()
-        //             ->maxLength(255),
-        //         Forms\Components\TextInput::make('nisn')
-        //             ->required()
-        //             ->maxLength(255),
-        //         Forms\Components\Select::make('jenis_kelamin')
-        //             ->label('Jenis Kelamin')
-        //             ->options([
-        //                 'L' => 'Laki-Laki',
-        //                 'P' => 'Perempuan',
-        //             ])
-        //             ->required()
-        //             ->placeholder('Pilih Jenis Kelamin'),
-        //         Forms\Components\DatePicker::make('tgl_lahir_siswa')
-        //             ->required(),
-        //         Forms\Components\TextInput::make('tempat_lahir_siswa')
-        //             ->required()
-        //             ->maxLength(255),
-        //         Forms\Components\DatePicker::make('tahun_ajaran_daftar')
-        //             ->label('Pendaftaran')
-        //             ->required(),
-        //         Forms\Components\FileUpload::make('gambar'),
-
-        //     ]);
         $schema = [
             Forms\Components\Section::make('Data Siswa')
                 ->schema([
-                    // Forms\Components\DatePicker::make('tgl_mulai')
-                    //     ->required(),
                     Forms\Components\TextInput::make('name')
                         ->label('Nama Lengkap')
                         ->required()
@@ -256,6 +227,46 @@ class SiswaResource extends Resource
                 Tables\Columns\TextColumn::make('tahun_ajaran_daftar')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('tempat_lahir_siswa')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('tahun_ajaran_daftar')
+                    ->sortable()
+                    ->date()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('tahun_ajaran')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('kk')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('status_siswa')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(function ($state) {
+                        $options = [
+                            '1' => 'Lengkap',
+                            '2' => 'Yatim',
+                            '3' => 'Piatu',
+                            '4' => 'Yatim Piatu',
+                        ];
+
+                        return $options[$state] ?? 'Tidak Diketahui'; // Tampilkan "Tidak Diketahui" jika nilai tidak ada dalam opsi
+                    }),
+                Tables\Columns\TextColumn::make('nama_ayah')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama_ibu')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('nama_wali')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

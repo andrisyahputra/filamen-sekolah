@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
-            $table->dropForeign(['id_ayah']);
+            // $table->dropForeign(['id_ayah']);
             // Hapus kolom
-            $table->dropColumn('id_ayah');
-            $table->dropForeign(['id_ibu']);
+            // $table->dropColumn('id_ayah');
+            // $table->dropForeign(['id_ibu']);
             // Hapus kolom
-            $table->dropColumn('id_ibu');
-            $table->dropForeign(['id_wali']);
-            // Hapus kolom
-            $table->dropColumn('id_wali');
+            // $table->dropColumn('id_ibu');
+            // $table->dropForeign(['id_wali']);
+            // // Hapus kolom
+            // $table->dropColumn('id_wali');
         });
     }
 
@@ -32,9 +32,9 @@ return new class extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
-            $table->foreignId('id_ibu')->nullable()->constrained('ibus');
-            $table->foreignId('id_ayah')->nullable()->constrained('ayahs');
-            $table->foreignId('id_wali')->nullable()->constrained('walis');
+            // $table->foreignId('id_ibu')->nullable()->constrained('ibus');
+            // $table->foreignId('id_ayah')->nullable()->constrained('ayahs');
+            // $table->foreignId('id_wali')->nullable()->constrained('walis');
         });
     }
 };

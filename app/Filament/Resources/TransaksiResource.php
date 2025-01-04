@@ -173,7 +173,7 @@ class TransaksiResource extends Resource
                     ->label('Nama Kategori')
                     ->description(fn(Transaksi $record): string => $record->keterangan),
                 Tables\Columns\IconColumn::make('kategori_transaksi.jenis_transaksi')
-                    ->label('Tipe  ')
+                    ->label('Tipe')
                     ->boolean()
                     ->trueIcon('heroicon-o-arrow-up-circle')
                     ->falseIcon('heroicon-o-arrow-down-circle')

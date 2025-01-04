@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::table('gurus', function (Blueprint $table) {
             //
             $table->integer('jenis_guru')->default('0');
-            $table->foreignId('jabatans_id')->nullable()->constrained('jabatans');
+            $table->foreignId('jabatan_id')->nullable()->constrained('jabatans');
         });
     }
 
@@ -25,9 +25,9 @@ return new class extends Migration {
         Schema::table('gurus', function (Blueprint $table) {
             //
             $table->dropColumn('jenis_guru');
-            $table->dropForeign(['jabatans_id']);
+            $table->dropForeign(['jabatan_id']);
             // Hapus kolom
-            $table->dropColumn('jabatans_id');
+            $table->dropColumn('jabatan_id');
         });
     }
 };

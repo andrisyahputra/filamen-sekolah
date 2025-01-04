@@ -49,6 +49,7 @@ class PengurusResource extends Resource
                     ->label('jabatan')
                     ->relationship('jabatan', 'name')
                     ->preload()
+                    ->required()
                     ->searchable(),
             ]);
     }

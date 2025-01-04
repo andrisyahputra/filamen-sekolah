@@ -52,8 +52,8 @@ class GuruResource extends Resource
                 Forms\Components\FileUpload::make('gambar'),
                 Forms\Components\MultiSelect::make('id_mata_pelajaran')
                     ->label('Mata Pelajaran')
-                    ->relationship('mataPelajarans', 'name') // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
-                    ->required(),
+                    ->relationship('mataPelajarans', 'name'), // Pastikan 'mataPelajarans' sesuai dengan nama relasi di model Guru
+                // ->required(),
                 Forms\Components\Select::make('jenis_guru')
                     ->label('Jenis Guru')
                     ->options([
@@ -75,7 +75,7 @@ class GuruResource extends Resource
                 Forms\Components\Textarea::make('alamat')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Select::make('jabatan')
+                Forms\Components\Select::make('jabatan_id')
                     ->relationship('jabatan', 'name')
                     ->preload()
                     ->searchable(),

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
-            $table->string('tahun_ajaran')->nullable();
+            // $table->string('tahun_ajaran')->nullable();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
-            $table->dropColumn('tahun_ajaran');
+            // $table->dropColumn('tahun_ajaran');
         });
     }
 };
