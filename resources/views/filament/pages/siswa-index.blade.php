@@ -3,7 +3,7 @@
         @php
             $totalItems = count($kelas);
         @endphp
-        <h1 class="text-2xl font-bold mb-6 text-center ">Daftar Kelas {{ $totalItems }}</h1>
+        <h1 class="text-2xl font-bold mb-6 text-center ">Daftar Kelas ({{ $totalItems }})</h1>
 
         <div
             class="p-4 shadow-md rounded border-2 border-success-600 outline outline-2 outline-offset-2 outline-success-400 text-center">
