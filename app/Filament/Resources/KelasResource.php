@@ -68,7 +68,7 @@ class KelasResource extends Resource
                 Forms\Components\MultiSelect::make('siswas')
                     ->label('Siswa')
                     ->relationship('siswas', 'name')
-                    ->required()
+                    // ->required()
                     ->options(
                         Siswa::doesntHave('kelas')
                             ->pluck('name', 'id')

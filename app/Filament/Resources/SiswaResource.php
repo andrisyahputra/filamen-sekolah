@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SiswaResource\Pages;
 use App\Filament\Resources\SiswaResource\RelationManagers;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -29,15 +30,27 @@ class SiswaResource extends Resource
     }
 
 
+
     public static function form(Form $form): Form
     {
+        // dd($form->getRecord()->kelas->first()->id);
         $schema = [
+
             Forms\Components\Section::make('Data Siswa')
                 ->schema([
                     Forms\Components\TextInput::make('name')
                         ->label('Nama Lengkap')
                         ->required()
                         ->maxLength(255),
+                    Forms\Components\Select::make('kelas_id') // Ensure this corresponds to the 'kelas_id' field in the database
+                        ->label('Kelas')
+                        ->relationship('kelas', 'name')
+                        ->options(function () {
+                            return Kelas::all()->pluck('name', 'id');
+                        })
+                        ->searchable() // Allow searching for kelas
+                        ->placeholder('Pilih Kelas')
+                        ->hidden(fn(string $context) => $context === 'create'),
                     Forms\Components\TextInput::make('nisn')
                         ->label('NISN')
                         ->required()

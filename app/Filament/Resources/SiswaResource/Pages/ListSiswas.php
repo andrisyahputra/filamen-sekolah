@@ -27,16 +27,20 @@ class ListSiswas extends ListRecords
     }
     public function getTitle(): string|Htmlable
     {
-        return 'Siswa  ' . ucwords(($this->kelas ? $this->kelas->name : 'Unknown Kelas'));
+        return 'Siswa  ' . ucwords(($this->kelas ? $this->kelas->name : 'Tidak Ada Kelas'));
     }
     protected function getTableQuery(): ?Builder
     {
         // Use your Siswa model and add any necessary filters based on the kelasId
         return Siswa::query()
             ->when($this->kelasId, function ($query) {
+                // If kelasId is provided, filter by the related kelas
                 return $query->whereHas('kelas', function ($query) {
                     $query->where('kelas.id', $this->kelasId);
                 });
+            }, function ($query) {
+                // If kelasId is null, include siswa without kelas
+                return $query->whereDoesntHave('kelas');
             });
     }
 

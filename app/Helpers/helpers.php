@@ -21,3 +21,8 @@ if (!function_exists('formatBulan')) {
         return $bulanIndonesia[$bulan] ?? 'Tidak diketahui';
     }
 }
+
+function jumlahSiswaTanpaKelas(): int
+{
+    return \App\Models\Siswa::whereDoesntHave('kelas')->count();
+}

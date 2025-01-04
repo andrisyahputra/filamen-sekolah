@@ -32,18 +32,17 @@ class CreateSiswa extends CreateRecord
         return 'Tambah Siswa  ' . ucwords(($this->kelas ? $this->kelas->name : 'Unknown Kelas'));
     }
 
+    protected function afterCreate(): void
+    {
+        $siswa = $this->record;
+        $siswa->kelas()->attach($this->kelasId);
+        // dd($siswa->id);
+        // Runs after the form fields are saved to the database.
+    }
 
-    // protected function mutateFormDataBeforeCreate(array $data): array
-    // {
-    //     // Automatically associate the new siswa with the selected kelas
-    //     if ($this->kelasId) {
-    //         $data['kelas_id'] = $this->kelasId; // Make sure 'kelas_id' is the correct column in the siswa table
-    //     }
-    //     return $data;
-    // }
 
-    // protected function getRedirectUrl(): string
-    // {
-    //     return $this->resource::getUrl('index');
-    // }
+    protected function getRedirectUrl(): string
+    {
+        return SiswaResource::getUrl();
+    }
 }

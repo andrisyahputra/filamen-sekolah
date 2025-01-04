@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::table('kelas', function (Blueprint $table) {
             //
-            $table->foreignId('id_guru')->constrained('gurus')->nullable();
+            $table->foreignId('id_guru')->nullable()->constrained('gurus');
         });
     }
 

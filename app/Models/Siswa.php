@@ -13,4 +13,8 @@ class Siswa extends Model
     {
         return $this->belongsToMany(Kelas::class, 'kelas_siswa', 'siswa_id', 'kelas_id');
     }
+    public static function jumlahSiswaTanpaKelas(): int
+    {
+        return Siswa::whereDoesntHave('kelas')->count();
+    }
 }
