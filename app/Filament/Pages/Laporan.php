@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Transaksi;
 use App\Models\Pengurus;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Filament\Pages\Page;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
@@ -123,10 +124,13 @@ class Laporan extends Page
 
     protected function prepareReportData($bulan, $tipe)
     {
+        $lastMonth = Carbon::create(null, $bulan)->subMonth();
+        $lastMonthNumber = $lastMonth->month;
+        $lastYearNumber = $lastMonth->year;
         $data = [
-            'bulan' => formatBulan($bulan),
+            'bulan' => formatBulan($bulan), // Format nama bulan
             'records' => Transaksi::with('kategori_transaksi')
-                ->whereMonth('tgl_transaksi', $bulan)
+                ->whereMonth('tgl_transaksi', $bulan) // Filter bulan ini
                 ->when($tipe === 'sekolah', function ($query) {
                     return $query->whereHas('kategori_transaksi', function ($q) {
                         $q->where('tipe', '1');
@@ -144,8 +148,26 @@ class Laporan extends Page
                 })
                 ->get(),
             'saldo_awal' => Transaksi::with('kategori_transaksi')
-                ->whereMonth('tgl_transaksi', '<', $bulan)
-                ->sum('jumlah'),
+                ->where(function ($query) use ($lastMonthNumber, $lastYearNumber) {
+                    $query->whereMonth('tgl_transaksi', $lastMonthNumber)
+                        ->whereYear('tgl_transaksi', $lastYearNumber); // Filter bulan dan tahun sebelumnya
+                })
+                ->when($tipe === 'sekolah', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        $q->where('tipe', '1');
+                    });
+                })
+                ->when($tipe === 'danabos', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        $q->where('tipe', '2');
+                    });
+                })
+                ->when($tipe === 'bkm', function ($query) {
+                    return $query->whereHas('kategori_transaksi', function ($q) {
+                        $q->where('tipe', '3');
+                    });
+                })
+                ->sum('jumlah'), // Jumlah saldo awal
             'ketua_umum' => Pengurus::whereHas('jabatan', function ($query) {
                 $query->where('name', 'like', '%ketua umum%');
             })->with('jabatan')->first(),
