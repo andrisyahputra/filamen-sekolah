@@ -127,33 +127,47 @@ class Laporan extends Page
         $lastMonth = Carbon::create(null, $bulan)->subMonth();
         $lastMonthNumber = $lastMonth->month;
         $lastYearNumber = $lastMonth->year;
-        $saldoAwal = Transaksi::where(function ($query) use ($lastMonthNumber, $lastYearNumber) {
-            $query->whereMonth('tgl_transaksi', $lastMonthNumber)
-                ->whereYear('tgl_transaksi', $lastYearNumber); // Filter bulan dan tahun sebelumnya
-        })
-            ->when($tipe === 'sekolah', function ($query) {
-                return $query->whereHas('kategori_transaksi', function ($q) {
-                    $q->where('tipe', '1');
-                });
+        $querySaldoAwal = Transaksi::with('kategori_transaksi')
+            ->whereMonth('tgl_transaksi', $lastMonthNumber)
+            ->whereYear('tgl_transaksi', $lastYearNumber);
+
+        // Hitung total pemasukkan sesuai tipe
+        $totalPemasukkan = $querySaldoAwal
+            ->pemasukkan()
+            ->whereHas('kategori_transaksi', function ($q) use ($tipe) {
+                switch ($tipe) {
+                    case 'sekolah':
+                        $q->where('tipe', '1');
+                        break;
+                    case 'danabos':
+                        $q->where('tipe', '2');
+                        break;
+                    case 'bkm':
+                        $q->where('tipe', '3');
+                        break;
+                }
             })
-            ->when($tipe === 'danabos', function ($query) {
-                return $query->whereHas('kategori_transaksi', function ($q) {
-                    $q->where('tipe', '2');
-                });
+            ->sum('jumlah');
+
+        // Hitung total pengeluaran sesuai tipe
+        $totalPengeluaran = $querySaldoAwal
+            ->pengeluaran()
+            ->whereHas('kategori_transaksi', function ($q) use ($tipe) {
+                switch ($tipe) {
+                    case 'sekolah':
+                        $q->where('tipe', '1');
+                        break;
+                    case 'danabos':
+                        $q->where('tipe', '2');
+                        break;
+                    case 'bkm':
+                        $q->where('tipe', '3');
+                        break;
+                }
             })
-            ->when($tipe === 'bkm', function ($query) {
-                return $query->whereHas('kategori_transaksi', function ($q) {
-                    $q->where('tipe', '3');
-                });
-            });
+            ->sum('jumlah');
 
-        // Total pemasukkan
-        $totalPemasukkan = $saldoAwal->clone()->pemasukkan()->sum('jumlah');
-
-        // Total pengeluaran
-        $totalPengeluaran = $saldoAwal->clone()->pengeluaran()->sum('jumlah');
-
-        // Saldo awal dihitung
+        // Hitung saldo awal
         $saldoAwal = $totalPemasukkan - $totalPengeluaran;
 
         $data = [
