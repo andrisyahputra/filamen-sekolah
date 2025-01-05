@@ -127,6 +127,35 @@ class Laporan extends Page
         $lastMonth = Carbon::create(null, $bulan)->subMonth();
         $lastMonthNumber = $lastMonth->month;
         $lastYearNumber = $lastMonth->year;
+        $saldoAwal = Transaksi::where(function ($query) use ($lastMonthNumber, $lastYearNumber) {
+            $query->whereMonth('tgl_transaksi', $lastMonthNumber)
+                ->whereYear('tgl_transaksi', $lastYearNumber); // Filter bulan dan tahun sebelumnya
+        })
+            ->when($tipe === 'sekolah', function ($query) {
+                return $query->whereHas('kategori_transaksi', function ($q) {
+                    $q->where('tipe', '1');
+                });
+            })
+            ->when($tipe === 'danabos', function ($query) {
+                return $query->whereHas('kategori_transaksi', function ($q) {
+                    $q->where('tipe', '2');
+                });
+            })
+            ->when($tipe === 'bkm', function ($query) {
+                return $query->whereHas('kategori_transaksi', function ($q) {
+                    $q->where('tipe', '3');
+                });
+            });
+
+        // Total pemasukkan
+        $totalPemasukkan = $saldoAwal->clone()->pemasukkan()->sum('jumlah');
+
+        // Total pengeluaran
+        $totalPengeluaran = $saldoAwal->clone()->pengeluaran()->sum('jumlah');
+
+        // Saldo awal dihitung
+        $saldoAwal = $totalPemasukkan - $totalPengeluaran;
+
         $data = [
             'bulan' => formatBulan($bulan), // Format nama bulan
             'records' => Transaksi::with('kategori_transaksi')
@@ -147,27 +176,7 @@ class Laporan extends Page
                     });
                 })
                 ->get(),
-            'saldo_awal' => Transaksi::with('kategori_transaksi')
-                ->where(function ($query) use ($lastMonthNumber, $lastYearNumber) {
-                    $query->whereMonth('tgl_transaksi', $lastMonthNumber)
-                        ->whereYear('tgl_transaksi', $lastYearNumber); // Filter bulan dan tahun sebelumnya
-                })
-                ->when($tipe === 'sekolah', function ($query) {
-                    return $query->whereHas('kategori_transaksi', function ($q) {
-                        $q->where('tipe', '1');
-                    });
-                })
-                ->when($tipe === 'danabos', function ($query) {
-                    return $query->whereHas('kategori_transaksi', function ($q) {
-                        $q->where('tipe', '2');
-                    });
-                })
-                ->when($tipe === 'bkm', function ($query) {
-                    return $query->whereHas('kategori_transaksi', function ($q) {
-                        $q->where('tipe', '3');
-                    });
-                })
-                ->sum('jumlah'), // Jumlah saldo awal
+            'saldo_awal' => $saldoAwal,
             'ketua_umum' => Pengurus::whereHas('jabatan', function ($query) {
                 $query->where('name', 'like', '%ketua umum%');
             })->with('jabatan')->first(),
