@@ -44,14 +44,14 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])->navigationGroups([
-                    'Data Siswa', // Grup pertama
-                    'Data Guru', // Grup pertama
-                    'Data Pengurus', // Grup pertama
-                    'Data Keuangan', // Grup pertama
-                    'Role',  // Grup kedua
-                ])
+                'Data Siswa', // Grup pertama
+                'Data Guru', // Grup pertama
+                'Data Pengurus', // Grup pertama
+                'Data Keuangan', // Grup pertama
+                'Role',  // Grup kedua
+            ])
 
-
+            ->databaseNotifications()
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

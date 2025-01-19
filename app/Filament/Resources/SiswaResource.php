@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\SiswaExporter;
 use App\Filament\Resources\SiswaResource\Pages;
 use App\Filament\Resources\SiswaResource\RelationManagers;
 use App\Models\Kelas;
@@ -10,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -304,7 +306,11 @@ class SiswaResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            // ->headerActions([
+            //     ExportAction::make()->exporter(SiswaExporter::class)
+            // ])
+        ;
     }
 
     public static function getRelations(): array
@@ -313,6 +319,7 @@ class SiswaResource extends Resource
             //
         ];
     }
+
 
     public static function getPages(): array
     {

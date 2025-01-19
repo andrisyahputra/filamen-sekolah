@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SiswaResource\Pages;
 
+use App\Filament\Exports\SiswaExporter;
 use App\Filament\Resources\SiswaResource;
 use App\Models\Kelas;
 use App\Models\Siswa;
@@ -55,6 +56,8 @@ class ListSiswas extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->url(route('filament.admin.resources.siswas.create', ['record' => $this->kelasId])), // Pass kelasId as a query parameter
+            Actions\ExportAction::make()
+                ->exporter(SiswaExporter::class),
         ];
     }
 }
