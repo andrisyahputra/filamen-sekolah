@@ -66,6 +66,10 @@ class SiswaExporter extends Exporter
             ExportColumn::make('status_siswa'),
         ];
     }
+    public function getFileName(Export $export): string
+    {
+        return 'daftar-siswa-' . now()->format('Y-m-d');
+    }
 
     public static function getCompletedNotificationBody(Export $export): string
     {
