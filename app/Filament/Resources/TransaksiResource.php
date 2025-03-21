@@ -47,9 +47,9 @@ class TransaksiResource extends Resource
                                     ->options(function () {
                                         return KategoriTransaksi::all()->mapWithKeys(function ($item) {
                                             if ($item->jenis_transaksi) {
-                                                $labe = "{$item->name} - (Pengeluaran)";
-                                            } else {
                                                 $labe = "{$item->name} - (Pemasukkan)";
+                                            } else {
+                                                $labe = "{$item->name} - (Pengeluaran)";
                                             }
 
                                             $label = $labe ?? 'Tidak Diketahui';

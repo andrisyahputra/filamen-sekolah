@@ -45,7 +45,7 @@ class KategoriTransaksiResource extends Resource
                                     ->offColor('danger') // Warna saat tidak aktif
                                     ->onIcon('heroicon-o-arrow-up-circle') // Ikon saat aktif
                                     ->offIcon('heroicon-o-arrow-down-circle') // Ikon saat tidak aktif
-                                    ->helperText('Merah: Pemasukkan, Hijau: Pengeluaran') // Penjelasan
+                                    ->helperText('Hijau: Pemasukkan, Merah: Pengeluaran') // Penjelasan
                                     ->required()
                             ])
                     ])
